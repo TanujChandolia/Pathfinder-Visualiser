@@ -27,6 +27,7 @@ class Cell{
 
 var notPressed = true;
 let size;
+let hsize;
 
 function setup() {
   var w = (windowWidth - windowWidth%c_size) - c_size;
@@ -34,14 +35,16 @@ function setup() {
   createCanvas(w,h);
   
   size = floor(w/c_size);
+  hsize = floor(h/c_size);
+  
   startx = floor(random(size));
-  starty = floor(random(size-10));
+  starty = floor(random(hsize));
   endx = floor(random(size));
-  endy = floor(random(size-10));
+  endy = floor(random(hsize));
   
   print(startx,starty,endx,endy);
-  cells = new Array(size);
-  states = new Array(size);
+  cells = new Array(hsize);
+  states = new Array(hsize);
   
   for(var i = 0; i < size; i++){
     cells[i] = new Array(size);
@@ -66,22 +69,22 @@ function setup() {
 }
 
 function valid(x,y){
-   return (x >= 0 && x < size && y >= 0 && y < size);
+   return (x >= 0 && x < size && y >= 0 && y < hsize);
 }
 async function BFS(){
    if(notPressed == false) return;
    else notPressed = false;
   
    var q = new Queue();
-   let vis = new Array(size);
+   let vis = new Array(hsize);
    let directions = [[1,0], [0,1], [-1,0], [0,-1]];
   
    for(var i = 0; i < vis.length; i++){
       vis[i] = new Array(size); 
    }
   
-   for(i = 0; i < size; i++){
-      for(var j = 0; j < size; j++){
+   for(i = 0; i < vis.length; i++){
+      for(var j = 0; j < vis[i].length; j++){
          vis[i][j] = false;
          if(states[i][j] == 1)
            vis[i][j] = true;
