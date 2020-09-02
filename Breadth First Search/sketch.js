@@ -26,6 +26,8 @@ let cells = [];
 let states = [];
 let positions = new Array(4);
 let g_size;
+let isDone;
+let canreset = true;
 
 function setup() {
   fullscreen(true);
@@ -50,6 +52,9 @@ function setup() {
 }
 
 function resetSketch(){
+  if(canreset == false) return;
+  isDone = false;
+  
   positions[0] = floor(random(g_size));
   positions[1] = floor(random(g_size));
   
@@ -83,8 +88,9 @@ function drawCells(){
        cells[i][j].display(states[i][j]);
   }
 }
+
 function drawWalls(){
-  if(mouseX >= 0 && mouseX <= 1000 && mouseY >= 0 && mouseY <= 1000 && mouseIsPressed == true){
+  if(mouseX >= 0 && mouseX <= 1000 && mouseY >= 0 && mouseY <= 1000 && mouseIsPressed == true && isDone == false){
        var x =floor(mouseX/cell_size);
        var y = floor(mouseY/cell_size);
       
@@ -103,8 +109,12 @@ function drawWalls(){
 function valid(x,y){
    return (x >= 0 && x < cells.length && y >= 0 && y < cells.length); 
 }
+
 async function BFS(){
-  
+   
+   if(isDone == true) return;
+   else isDone = true;
+   canreset = false;
    var q = new Queue();
    var vis = new Array(cells.length);
    for(var i = 0; i < vis.length; i++){
@@ -161,7 +171,7 @@ async function BFS(){
   }
   
   states[ex][ey] = 3;
-  
+  canreset = true;
 }
 
 function draw() {
